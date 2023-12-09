@@ -93,7 +93,7 @@
                                     <trix-editor input="body"></trix-editor>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="body" class="form-label">Materi</label>
+                                    <label for="body" class="form-label">Tutorial</label>
 
                                     @error('body')
                                         <div class="alert alert-danger" role="alert">

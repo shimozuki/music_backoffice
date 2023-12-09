@@ -18,19 +18,26 @@
 
             <li class="sidebar-item {{ request()->is('dashboard/posts') ? "active" : '' }}">
                 <a class="sidebar-link" href="{{ route('posts.index') }}">
-                    <i class="align-middle" data-feather="grid"></i> <span class="align-middle">My Posts</span>
+                    <i class="align-middle" data-feather="grid"></i> <span class="align-middle">Alat Music</span>
                 </a>
             </li>
 
-            <li class="sidebar-item {{ request()->is('dashboard/posts/create') ? "active" : '' }}">
-                <a class="sidebar-link" href="{{ route('posts.create') }}">
+            <li class="sidebar-item ">
+                <a class="sidebar-link" href="#">
                     <i class="align-middle" data-feather="send"></i> <span
-                        class="align-middle">Create Alat Music</span>
+                        class="align-middle">Sejarah Umum</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="#">
+                    <i class="align-middle" data-feather="send"></i> <span
+                        class="align-middle">About Apps</span>
                 </a>
             </li>
 
             @can('IsAdmin')
-                <li class="sidebar-header">
+                <!-- <li class="sidebar-header">
                     Admin resource
                 </li>
 
@@ -38,7 +45,7 @@
                     <a class="sidebar-link" href="{{ route('categories.index') }}">
                         <i class="align-middle" data-feather="map"></i> <span class="align-middle">Categoires</span>
                     </a>
-                </li>
+                </li> -->
             @endcan
         </ul>
     </div>

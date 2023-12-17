@@ -43,20 +43,6 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <!-- <div class="mb-3">
-                                    <label for="Category" class="form-label">Post category</label>
-                                    <select name="category_id" class="form-select mb-3" required>
-                                        <option selected disabled>Open this select menu</option>
-                                        @foreach ($categories as $category)
-                                            @if (old('category_id') == $category->id)
-                                                <option value="{{ $category->id }}" selected>{{ $category->name }}
-                                                </option>
-                                            @else
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                </div> -->
                                 <div class="mb-3">
                                     <label for="image" class="form-label">image</label>
                                     <img class="img-preview img-fluid mb-3 col-sm-6">

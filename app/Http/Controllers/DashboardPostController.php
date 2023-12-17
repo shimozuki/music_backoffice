@@ -44,11 +44,12 @@ class DashboardPostController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required',
-            'category_id' => 'required',
-            'slug' => 'required|unique:posts',
-            'image' => 'required|file|image|mimes:png,jpg|max:2048',
-            'body' => 'required'
+            'nama_alat' => 'required',
+            'sejarah' => 'required',
+            'perawatan' => 'required',
+            'image' => 'required|file|image|mimes:png,jpg|max:9048',
+            'tutorial' => 'required',
+            'pembuatan' => 'required'
         ]);
 
         if ( $request->file('image') ) {
@@ -58,12 +59,14 @@ class DashboardPostController extends Controller
 
         $validatedData['user_id'] = auth()->user()->id;
 
-        $validatedData['excerpt'] = Str::limit(strip_tags($validatedData['body']), 150, '...');
+        // $validatedData['excerpt'] = Str::limit(strip_tags($validatedData['body']), 150, '...');
 
         $create = Post::create($validatedData);
 
         if ( $create ) {
             return redirect()->route('posts.index')->with('success', 'Congratulation! your post has been created');
+        }else{
+            return redirect()->back()->with('field', 'Congratulation! your post has been created');
         }
 
     }

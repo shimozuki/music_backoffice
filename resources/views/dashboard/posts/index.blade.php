@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <h1 class="h3 mb-3">My Posts</h1>
+    <h1 class="h3 mb-3">Alat Music</h1>
 
     <div class="row">
         <div class="col-12 col-md-6">
@@ -44,8 +44,9 @@
                                         <thead>
                                             <tr>
                                                 <th class="d-xl-table-cell">No.</th>
-                                                <th class="d-xl-table-cell">Title</th>
-                                                <th class="d-xl-table-cell">Category</th>
+                                                <th class="d-xl-table-cell">Nama Alat Music</th>
+                                                <th class="d-xl-table-cell">link Vidio</th>
+                                                <th class="d-xl-table-cell">Image</th>
                                                 <th class="d-xl-table-cell text-center">Action</th>
                                             </tr>
                                         </thead>

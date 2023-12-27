@@ -34,43 +34,6 @@ class PostController extends Controller
             'post' => $post,
         ]);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // $image = Unsplash::search()
-    //     ->term('programming')
-    //     ->toJson();
-
-    // 	$img = json_decode(json_encode($image), TRUE);
-
-    //     $getVal = $img['results'];
-
-    //     $emptyImage = array();
-    //     foreach ($getVal as $key => $value) {
-    //         $emptyImage = $value['urls']['regular'] . "<br>";
-    //         $arr = array();
-
-    //         $arr = $emptyImage;
-    //     }
-
-    // 	dd($arr);
-
-    // $example = Unsplash::photos()->toJson();
-
-    // $toArray = json_decode(json_encode($example), true);
-    // $image = $toArray[0]['urls']['regular'];
 }
 
 

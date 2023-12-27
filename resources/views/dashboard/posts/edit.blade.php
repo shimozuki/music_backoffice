@@ -22,48 +22,34 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-8">
-                            <form action="{{ route('posts.update', $post->slug) }}" method="post"
+                            <form action="{{ route('posts.update', $data->id) }}" method="post"
                                 enctype="multipart/form-data">
                                 @method('patch')
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="title" class="form-label">Post title</label>
-                                    <input type="text" name="title"
-                                        class="form-control @error('title') is-invalid @enderror" id="title"
-                                        value="{{ old('title', $post->title) }}" required autofocus>
+                                    <label for="nama_alat" class="form-label">nama alat musik</label>
+                                    <input type="text" name="nama_alat"
+                                        class="form-control @error('nama_alat') is-invalid @enderror" id="nama_alat"
+                                        value="{{ old('nama_alat', $data->nama_alat) }}" required autofocus>
 
-                                    @error('title')
+                                    @error('nama_alat')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="slug" class="form-label">Slug</label>
-                                    <input type="text" name="slug" class="form-control @error('slug') is-invalid @enderror"
-                                        id="slug" value="{{ old('slug', $post->slug) }}" required readonly>
+                                    <label for="link" class="form-label">link</label>
+                                    <input type="text" name="link" class="form-control @error('link') is-invalid @enderror"
+                                        id="link" value="{{ old('link', $data->link) }}" required readonly>
 
-                                    @error('slug')
+                                    @error('link')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="Category" class="form-label">Post category</label>
-                                    <select name="category_id" class="form-select mb-3" required>
-                                        <option selected disabled>Open this select menu</option>
-                                        @foreach ($categories as $category)
-                                            @if (old('category_id', $post->category_id) == $category->id)
-                                                <option value="{{ $category->id }}" selected>{{ $category->name }}
-                                                </option>
-                                            @else
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <input type="hidden" name="old_image" value="{{ $post->image }}">
+                                    <input type="hidden" name="old_image" value="{{ $data->image }}">
                                     <label for="image" class="form-label">Posts banner image</label>
-                                    @if ($post->image)
-                                        <img src="{{ asset('storage/' . $post->image) }}" class="d-block img-preview img-fluid mb-3 col-sm-6">
+                                    @if ($data->image)
+                                        <img src="{{ asset($data->image) }}" class="d-block img-preview img-fluid mb-3 col-sm-6">
                                     @else
                                         <img class="img-preview img-fluid mb-3 col-sm-6">
                                     @endif
@@ -79,15 +65,48 @@
 
                                 </div>
                                 <div class="mb-3">
-                                    <label for="body" class="form-label">Body</label>
+                                    <label for="sejarah" class="form-label">sejarah</label>
 
-                                    @error('body')
+                                    @error('sejarah')
                                         <div class="alert alert-danger" role="alert">
                                             {{ $message }}
                                         </div>
                                     @enderror
-                                    <input id="body" type="hidden" name="body" value="{{ old('body', $post->body) }}">
-                                    <trix-editor input="body"></trix-editor>
+                                    <input id="sejarah" type="hidden" name="sejarah" value="{{ old('sejarah', $data->sejarah) }}">
+                                    <trix-editor input="sejarah"></trix-editor>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="perawatan" class="form-label">Cara perawatan</label>
+
+                                    @error('perawatan')
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                    <input id="perawatan" type="hidden" name="perawatan" value="{{ old('perawatan', $data->perawatan) }}">
+                                    <trix-editor input="perawatan"></trix-editor>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="tutorial" class="form-label">Tutorial</label>
+
+                                    @error('tutorial')
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                    <input id="tutorial" type="hidden" name="tutorial" value="{{ old('tutorial', $data->tutorial) }}">
+                                    <trix-editor input="tutorial"></trix-editor>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="pembuatan" class="form-label">Cara pembuatan</label>
+
+                                    @error('pembuatan')
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                    <input id="pembuatan" type="hidden" name="pembuatan" value="{{ old('pembuatan', $data->pembuatan) }}">
+                                    <trix-editor input="pembuatan"></trix-editor>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Update</button>
                             </form>
@@ -101,30 +120,6 @@
 
 @push('script')
     <script>
-        const title = document.querySelector('#title');
-        const slug = document.querySelector('#slug');
-
-        title.addEventListener('change', function() {
-            fetch('/dashboard/post/checkSlug?title=' + title.value)
-                .then(response => response.json())
-                .then(data => slug.value = data.slug)
-        });
-
-        // trix file tools remove behaviour
-        document.addEventListener('trix-file-accept', function(event) {
-            event.preventDefault();
-        });
-
-        $(document).ready(function() {
-            $('#error-alert').fadeTo(4000, 500).slideUp(500, function() {
-                $('#error-alert').slideUp(500);
-            });
-
-            $('#success-alert').fadeTo(4000, 500).slideUp(500, function() {
-                $('#success-alert').slideUp(500);
-            });
-        });
-
         function previewImage() {
             const image = document.querySelector('#image');
             const imgPreview = document.querySelector('.img-preview');

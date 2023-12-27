@@ -23,16 +23,16 @@
             </li>
 
             <li class="sidebar-item ">
-                <a class="sidebar-link" href="#" style="background-color: #5F8670;">
+                <a class="sidebar-link" href="{{url('/dashboard/sejarah_umum/index')}}" style="background-color: #5F8670;">
                     <i class="align-middle" data-feather="send"></i> <span
                         class="align-middle">Sejarah Umum</span>
                 </a>
             </li>
 
             <li class="sidebar-item">
-                <a class="sidebar-link" href="#" style="background-color: #5F8670;">
+                <a class="sidebar-link" href="{{ url('/dashboard/about/index') }}" style="background-color: #5F8670;">
                     <i class="align-middle" data-feather="send"></i> <span
-                        class="align-middle">About Apps</span>
+                        class="align-middle">Tentang Aplikasi</span>
                 </a>
             </li>
 

@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\AbourController;
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\DashboardPostController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\SejarahumumCOntroller;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 
@@ -55,13 +57,11 @@ Route::post('/logout', [LoginController::class, 'logout']);
 Route::get('/register', [RegisterController::class, 'index'])->middleware('guest');
 Route::post('/register', [RegisterController::class, 'store']);
 
-Route::resource('/dashboard/posts', DashboardPostController::class)->parameters([
-    'posts' => 'post:slug'
-])->middleware('auth');
+Route::resource('/dashboard/posts', DashboardPostController::class)->middleware('auth');
 
 // Check slug with fetch URI
-Route::get('/dashboard/post/checkSlug', [DashboardPostController::class, 'checkSlug'])->middleware('auth');
-
+// Route::get('/dashboard/post/checkSlug', [DashboardPostController::class, 'checkSlug'])->middleware('auth');
+Route::post('/dashboard/post/create',[DashboardPostController::class, 'store'])->middleware('auth');
 // Dashboard (for authenticate users)
 Route::get('/dashboard', function () {
     return view('dashboard.index');
@@ -73,4 +73,13 @@ Route::resource('/dashboard/categories', AdminCategoryController::class)
 
 Route::get('/dashboard/categories/checkSlug', [AdminCategoryController::class, 'checkSlug'])->middleware('auth');
 
+
+// sejarah umum
+Route::get('/dashboard/sejarah_umum/index', [SejarahumumCOntroller::class, 'index'])->name('sejarah_umum.index');
+Route::get('/dashboard/sejarah_umum/edit/{id}', [SejarahumumCOntroller::class, 'edit']);
+Route::patch('/dashboard/sejarah_umum/update/{id}', [SejarahumumController::class, 'update'])->name('sejarah_umum.update');
+// about
+Route::get('/dashboard/about/index', [AbourController::class, 'index'])->name('about.index');
+Route::get('/dashboard/about/edit/{id}', [AbourController::class, 'edit']);
+Route::patch('/dashboard/about/update/{id}', [AbourController::class, 'update'])->name('about.update');
 

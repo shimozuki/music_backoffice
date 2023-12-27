@@ -1,11 +1,11 @@
 @extends('layouts.dashboard')
 
 @section('title')
-    Create Post Page
+    Tambah Alat Musik
 @endsection
 
 @section('content')
-    <h1 class="mb-5 h3">Create new posts</h1>
+    <h1 class="mb-5 h3">Tambah Alat Music</h1>
 
     <div class="row">
         <div class="col-12">
@@ -17,16 +17,16 @@
             @endif
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title mb-0">Do something great!</h3>
+                    <h3 class="card-title mb-0">Silahkan Isi form di bawah ini!</h3>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-8">
-                            <form action="{{ route('posts.store') }}" method="post" enctype="multipart/form-data">
+                            <form action="{{ url('/dashboard/post/create') }}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="mb-3">
                                     <label for="title" class="form-label">Nama Alat Music</label>
-                                    <input type="text" name="title"
+                                    <input type="text" name="nama_alat"
                                         class="form-control @error('title') is-invalid @enderror" id="title"
                                         value="{{ old('title') }}" required autofocus>
 
@@ -36,7 +36,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="slug" class="form-label">Link Vidio</label>
-                                    <input type="text" name="slug" class="form-control @error('slug') is-invalid @enderror"
+                                    <input type="text" name="link" class="form-control @error('slug') is-invalid @enderror"
                                         id="slug" value="{{ old('slug') }}" required>
 
                                     @error('slug')
@@ -57,48 +57,48 @@
 
                                 </div>
                                 <div class="mb-3">
-                                    <label for="body" class="form-label">Sejarah</label>
+                                    <label for="sejarah" class="form-label">Sejarah</label>
 
-                                    @error('body')
+                                    @error('sejarah')
                                         <div class="alert alert-danger" role="alert">
                                             {{ $message }}
                                         </div>
                                     @enderror
-                                    <input id="body" type="hidden" name="body" value="{{ old('body') }}">
-                                    <trix-editor input="body"></trix-editor>
+                                    <input id="sejarah" type="hidden" name="sejarah" value="{{ old('sejarah') }}">
+                                    <trix-editor input="sejarah"></trix-editor>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="body" class="form-label">Cara Perawatan</label>
+                                    <label for="perawatan" class="form-label">Cara Perawatan</label>
 
-                                    @error('body')
+                                    @error('perawatan')
                                         <div class="alert alert-danger" role="alert">
                                             {{ $message }}
                                         </div>
                                     @enderror
-                                    <input id="body" type="hidden" name="body" value="{{ old('body') }}">
-                                    <trix-editor input="body"></trix-editor>
+                                    <input id="perawatan" type="hidden" name="perawatan" value="{{ old('perawatan') }}">
+                                    <trix-editor input="perawatan"></trix-editor>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="body" class="form-label">Tutorial</label>
+                                    <label for="tutorial" class="form-label">Tutorial</label>
 
-                                    @error('body')
+                                    @error('tutorial')
                                         <div class="alert alert-danger" role="alert">
                                             {{ $message }}
                                         </div>
                                     @enderror
-                                    <input id="body" type="hidden" name="body" value="{{ old('body') }}">
-                                    <trix-editor input="body"></trix-editor>
+                                    <input id="tutorial" type="hidden" name="tutorial" value="{{ old('tutorial') }}">
+                                    <trix-editor input="tutorial"></trix-editor>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="body" class="form-label">Cara Pembuatan</label>
+                                    <label for="pembuatan" class="form-label">Cara Pembuatan</label>
 
-                                    @error('body')
+                                    @error('pembuatan')
                                         <div class="alert alert-danger" role="alert">
                                             {{ $message }}
                                         </div>
                                     @enderror
-                                    <input id="body" type="hidden" name="body" value="{{ old('body') }}">
-                                    <trix-editor input="body"></trix-editor>
+                                    <input id="pembuatan" type="hidden" name="pembuatan" value="{{ old('pembuatan') }}">
+                                    <trix-editor input="pembuatan"></trix-editor>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Create</button>
                             </form>
@@ -112,30 +112,6 @@
 
 @push('script')
     <script>
-        const title = document.querySelector('#title');
-        const slug = document.querySelector('#slug');
-
-        title.addEventListener('change', function() {
-            fetch('/dashboard/post/checkSlug?title=' + title.value)
-                .then(response => response.json())
-                .then(data => slug.value = data.slug)
-        });
-
-        // trix file tools remove behaviour
-        document.addEventListener('trix-file-accept', function(event) {
-            event.preventDefault();
-        });
-
-        $(document).ready(function () {
-            $('#error-alert').fadeTo(4000, 500).slideUp(500, function() {
-                $('#error-alert').slideUp(500);
-            });
-
-            $('#success-alert').fadeTo(4000, 500).slideUp(500, function() {
-                $('#success-alert').slideUp(500);
-            });
-        });
-
         // preview Image
         function previewImage() {
             const image = document.querySelector('#image');

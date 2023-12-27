@@ -45,6 +45,7 @@ class DashboardPostController extends Controller
     {
         $validatedData = $request->validate([
             'nama_alat' => 'required',
+            'link' => 'required',
             'sejarah' => 'required',
             'perawatan' => 'required',
             'image' => 'required|file|image|mimes:png,jpg|max:9048',
@@ -52,14 +53,23 @@ class DashboardPostController extends Controller
             'pembuatan' => 'required'
         ]);
 
-        if ( $request->file('image') ) {
-            $validatedData['image'] = $request->file('image')->store('post-images');
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $extension = $image->getClientOriginalExtension();  // Get the original file extension
+            $imageName = time() . '_' . uniqid() . '.' . $extension;  // Generate a unique file name with the original extension
+            $image->move(public_path('post-images'), $imageName);
+        
+            $validatedData['image'] = 'post-images/' . $imageName;
         }
 
 
+        $validatedData['status'] = 1;
         $validatedData['user_id'] = auth()->user()->id;
 
-        // $validatedData['excerpt'] = Str::limit(strip_tags($validatedData['body']), 150, '...');
+        $validatedData['sejarah'] = Str::limit(strip_tags($validatedData['sejarah']), 150, '...');
+        $validatedData['tutorial'] = Str::limit(strip_tags($validatedData['tutorial']), 150, '...');
+        $validatedData['perawatan'] = Str::limit(strip_tags($validatedData['perawatan']), 150, '...');
+        $validatedData['pembuatan'] = Str::limit(strip_tags($validatedData['pembuatan']), 150, '...');
 
         $create = Post::create($validatedData);
 
@@ -68,7 +78,6 @@ class DashboardPostController extends Controller
         }else{
             return redirect()->back()->with('field', 'Congratulation! your post has been created');
         }
-
     }
 
     /**
@@ -84,53 +93,46 @@ class DashboardPostController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Post $post)
+    public function edit($id)
     {
-        return view('dashboard.posts.edit', [
-            'post' => $post,
-            'categories' => Category::all(),
-        ]);
+        $data = Post::find($id);
+        return view('dashboard.posts.edit', compact('data'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Post $post)
     {
-        $rules = [
-            'title' => 'required',
-            'image' => 'required|file|image|mimes:png,jpg|max:2048',
-            'category_id' => 'required',
-            'body' => 'required'
-        ];
+        $validatedData = $request->validate([
+            'nama_alat' => 'required',
+            'link' => 'required',
+            'sejarah' => 'required',
+            'perawatan' => 'required',
+            'image' => 'required|file|image|mimes:png,jpg|max:9048',
+            'tutorial' => 'required',
+            'pembuatan' => 'required'
+        ]);
 
-        if ( $request->slug != $post->slug ) {
-            $rules['slug'] = 'required|unique:posts';
-        }
-
-        $validatedData = $request->validate($rules);
-
-        if ( $request->file('image') ) {
-            if ( $request->old_image ) {
-                Storage::delete($request->old_image);
+        if ($request->hasFile('image')) {
+            // Delete old image if it exists
+            if ($request->old_image) {
+                Storage::delete(public_path($request->old_image));
             }
-
-            $validatedData['image'] = $request->file('image')->store('post-images');
+        
+            $image = $request->file('image');
+            $extension = $image->getClientOriginalExtension();
+            $imageName = time() . '_' . uniqid() . '.' . $extension;
+        
+            $image->move(public_path('post-images'), $imageName);
+        
+            $validatedData['image'] = 'post-images/' . $imageName;
         }
+        
 
         $validatedData['user_id'] = auth()->user()->id;
 
-        $validatedData['excerpt'] = Str::limit(strip_tags($validatedData['body']), 150, '...');
+        $validatedData['sejarah'] = Str::limit(strip_tags($validatedData['sejarah']), 150, '...');
+        $validatedData['tutorial'] = Str::limit(strip_tags($validatedData['tutorial']), 150, '...');
+        $validatedData['perawatan'] = Str::limit(strip_tags($validatedData['perawatan']), 150, '...');
+        $validatedData['pembuatan'] = Str::limit(strip_tags($validatedData['pembuatan']), 150, '...');
 
         $post->where('id', $post->id)->update($validatedData);
 
@@ -155,8 +157,8 @@ class DashboardPostController extends Controller
         return redirect()->route('posts.index')->with('success', 'Post has been deleted!');
     }
 
-    public function checkSlug(Request $request) {
-        $slug = SlugService::createSlug(Post::class, 'slug', $request->title);
-        return response()->json(['slug' => $slug]);
-    }
+    // public function checkSlug(Request $request) {
+    //     $slug = SlugService::createSlug(Post::class, 'slug', $request->title);
+    //     return response()->json(['slug' => $slug]);
+    // }
 }

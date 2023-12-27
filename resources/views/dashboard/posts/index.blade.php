@@ -18,12 +18,11 @@ My Posts
 
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title mb-0">Create new post</h5>
+                <h5 class="card-title mb-0">Tambahkan Alat Musik Tradisional</h5>
             </div>
             <div class="card-body">
-                <p class="card-text">Adding new post here, just click the button and then it will redirect to create
-                    post page.</p>
-                <a href="{{ route('posts.create') }}" class="card-link btn btn-dark">Go to page</a>
+                <p class="card-text">Tambahkan Kontent Edukasi Tentang Alat Musik Tradisional Sumbawa dengan cara klik tombol Tambah.</p>
+                <a href="{{ route('posts.create') }}" class="card-link btn btn-dark">Tambah</a>
             </div>
         </div>
     </div>
@@ -47,6 +46,7 @@ My Posts
                                             <th class="d-xl-table-cell">Nama Alat Music</th>
                                             <th class="d-xl-table-cell">link Vidio</th>
                                             <th class="d-xl-table-cell">image</th>
+                                            <th class="d-xl-table-cell">Status</th>
                                             <th class="d-xl-table-cell text-center">Action</th>
                                         </tr>
                                     </thead>
@@ -55,9 +55,15 @@ My Posts
                                         <tr>
                                             <td class="d-xl-table-cell">{{ $loop->iteration }}</td>
                                             <td class="d-xl-table-cell">{{ $post->nama_alat }}</td>
+
                                             <td class="d-xl-table-cell"><iframe width="150" height="50%" src="https://www.youtube.com/embed/{{ $post->link }}">
                                                 </iframe></td>
                                             <td class="d-xl-table-cell text-center"><img src="{{ asset($post->image) }}" alt="" width="50%"></td>
+                                            <td class="d-xl-table-cell">
+                                                <span id="statusToggle{{ $post->id }}" class="btn {{ $post->status == 1 ? 'btn-success' : 'btn-danger' }}">
+                                                    {{ $post->status == 1 ? 'Published' : 'Unpublished' }}
+                                                </span>
+                                            </td>
                                             <td>
                                                 <div class="d-flex">
                                                     <!-- <a href="{{ route('posts.show', $post->id) }}"><span class="badge bg-info">More <i class="align-middle" data-feather="maximize"></i></span></a> &nbsp; -->
@@ -114,6 +120,53 @@ My Posts
                 }
             });
         });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('[id^=statusToggle]').click(function() {
+            var postId = $(this).attr('id').replace('statusToggle', '');
+
+            Swal.fire({
+                title: 'Anda Yakin?',
+                text: 'Ingin Mengubah Status Postingan.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, update it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    updateStatus(postId);
+                }
+            });
+        });
+
+        function updateStatus(postId) {
+            $.ajax({
+                url: `{{ url('/dashboard/update-status/')}}` + postId,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                },
+                success: function(response) {
+                    if (response.status == 1) {
+                        $('#statusToggle' + postId)
+                            .removeClass('btn-danger')
+                            .addClass('btn-success')
+                            .text('Published');
+                    } else {
+                        $('#statusToggle' + postId)
+                            .removeClass('btn-success')
+                            .addClass('btn-danger')
+                            .text('Unpublished');
+                    }
+                },
+                error: function(error) {
+                    console.error('Error updating status:', error);
+                }
+            });
+        }
     });
 </script>
 @endpush

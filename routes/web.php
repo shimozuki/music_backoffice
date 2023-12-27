@@ -82,4 +82,5 @@ Route::patch('/dashboard/sejarah_umum/update/{id}', [SejarahumumController::clas
 Route::get('/dashboard/about/index', [AbourController::class, 'index'])->name('about.index');
 Route::get('/dashboard/about/edit/{id}', [AbourController::class, 'edit']);
 Route::patch('/dashboard/about/update/{id}', [AbourController::class, 'update'])->name('about.update');
+Route::post('/dashboard/update-status/{id}', [DashboardPostController::class, 'updateStatus']);
 

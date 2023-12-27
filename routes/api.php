@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\AllapiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/get-all', [AllapiController::class, 'musikall']);
+Route::get('/get-about', [AllapiController::class, 'getabout']);
+Route::get('/Sejarah_mumu', [AllapiController::class, 'sejarah']);
+Route::post('/get-byid', [AllapiController::class, 'getbyid']);
+Route::post('/upload', [AllapiController::class, 'upload']);

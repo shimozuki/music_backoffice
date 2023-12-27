@@ -19,7 +19,7 @@ class DashboardPostController extends Controller
     public function index()
     {
         return view('dashboard.posts.index', [
-            'posts' => Post::where('user_id', auth()->user()->id)->get(),
+            'posts' => Post::all(),
         ]);
     }
 
@@ -58,7 +58,7 @@ class DashboardPostController extends Controller
             $extension = $image->getClientOriginalExtension();  // Get the original file extension
             $imageName = time() . '_' . uniqid() . '.' . $extension;  // Generate a unique file name with the original extension
             $image->move(public_path('post-images'), $imageName);
-        
+
             $validatedData['image'] = 'post-images/' . $imageName;
         }
 
@@ -73,9 +73,9 @@ class DashboardPostController extends Controller
 
         $create = Post::create($validatedData);
 
-        if ( $create ) {
+        if ($create) {
             return redirect()->route('posts.index')->with('success', 'Congratulation! your post has been created');
-        }else{
+        } else {
             return redirect()->back()->with('field', 'Congratulation! your post has been created');
         }
     }
@@ -116,16 +116,16 @@ class DashboardPostController extends Controller
             if ($request->old_image) {
                 Storage::delete(public_path($request->old_image));
             }
-        
+
             $image = $request->file('image');
             $extension = $image->getClientOriginalExtension();
             $imageName = time() . '_' . uniqid() . '.' . $extension;
-        
+
             $image->move(public_path('post-images'), $imageName);
-        
+
             $validatedData['image'] = 'post-images/' . $imageName;
         }
-        
+
 
         $validatedData['user_id'] = auth()->user()->id;
 
@@ -137,7 +137,6 @@ class DashboardPostController extends Controller
         $post->where('id', $post->id)->update($validatedData);
 
         return redirect()->route('posts.index')->with('success', 'Your post has been updated!');
-
     }
 
     /**
@@ -157,6 +156,14 @@ class DashboardPostController extends Controller
         return redirect()->route('posts.index')->with('success', 'Post has been deleted!');
     }
 
+    public function updateStatus($id)
+    {
+        $post = Post::find($id);
+        $post->status = $post->status == 1 ? 0 : 1;
+        $post->save();
+
+        return response()->json(['status' => $post->status]);
+    }
     // public function checkSlug(Request $request) {
     //     $slug = SlugService::createSlug(Post::class, 'slug', $request->title);
     //     return response()->json(['slug' => $slug]);
